@@ -1,5 +1,15 @@
-# Base image
 FROM node:20
-RUN npx prisma generate
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm i
+
+COPY ./prisma ./prisma/
+
+COPY . .
+
 EXPOSE 3001
-CMD [ "npm", "run", "start:prod" ]
+
+CMD ["npm", "start"]
