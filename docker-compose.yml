@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  service-app:
+    build:
+      context: ./service-app/
+      dockerfile: ./service-app/Dockerfile
+    container_name: service
+    restart: always
+    volumes:
+      - ./:/app
+      - /app/node_modules
+      - /app/prisma
+    ports: 
+      - 3000-3000
+    depends_on:
+      - main-db
+
+  # worker-app:
+  #   build:
+  #     context: ./worker-app/
+  #   ports:
+  #     - "3001-3001"
+  #   depends_on:
+  #     - main-db
+
+  main-db:
+    image: postgres:13
+    ports:
+      - 5434:5432
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: service_data
